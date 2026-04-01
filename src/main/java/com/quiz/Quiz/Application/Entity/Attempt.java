@@ -18,7 +18,7 @@ public class Attempt {
 
     private Integer score;       // Kitne sawal sahi hue
     private Integer totalQuestions; // Total kitne sawal the
-    private LocalDateTime timestamp; // Kab attempt kiya (Date & Time)
+    private LocalDateTime createdAt; // Kab attempt kiya (Date & Time)
 
     @ManyToOne
     @JoinColumn(name = "user_id")
