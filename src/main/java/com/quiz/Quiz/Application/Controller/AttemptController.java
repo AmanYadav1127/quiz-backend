@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/attempts")
 @RequiredArgsConstructor
@@ -39,5 +41,21 @@ public class AttemptController {
         Attempt savedAttempt = attemptService.processAttempt(attemptDto, user, quiz);
 
         return ResponseEntity.ok(savedAttempt);
+    }
+
+    // AttemptController mein submitQuiz ke niche ye dalo:
+    @GetMapping("/history")
+    public ResponseEntity<List<Attempt>> getMyHistory() {
+        // 1. Token se current user ki email nikalo
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // 2. Email se User object nikalo
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // 3. Us user ki ID se saari history fetch karo
+        List<Attempt> history = attemptService.getUserHistory(user.getId());
+
+        return ResponseEntity.ok(history);
     }
 }
