@@ -1,5 +1,6 @@
 package com.quiz.Quiz.Application.Controller;
 
+import com.quiz.Quiz.Application.DTOS.QuizDto;
 import com.quiz.Quiz.Application.Entity.Quiz;
 import com.quiz.Quiz.Application.Service.QuizService;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,12 @@ public class QuizController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Quiz>> fetchAllQuizzes() {
+    public ResponseEntity<List<QuizDto>> fetchAllQuizzes() {
         return ResponseEntity.ok(quizService.getAllQuizzes());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Quiz> fetchQuizById(@PathVariable Long id) {
+    public ResponseEntity<QuizDto> fetchQuizById(@PathVariable Long id) {
         return ResponseEntity.ok(quizService.getQuizById(id));
     }
 }

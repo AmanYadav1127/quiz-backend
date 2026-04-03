@@ -8,18 +8,21 @@ import com.quiz.Quiz.Application.Entity.User;
 import com.quiz.Quiz.Application.Repository.AttemptRepository;
 import com.quiz.Quiz.Application.Repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AttemptService {
     private final AttemptRepository attemptRepository;
     private final QuestionRepository questionRepository;
+    private final ModelMapper modelMapper;
 
-    public Attempt processAttempt(AttemptDto attemptDto, User user, Quiz quiz) {
+    public AttemptDto processAttempt(AttemptDto attemptDto, User user, Quiz quiz) {
         int correctCount = 0;
 
         // Loop chalao har answer par jo DTO mein aaya hai
@@ -41,11 +44,16 @@ public class AttemptService {
         attempt.setUser(user);
         attempt.setQuiz(quiz);
 
-        return attemptRepository.save(attempt);
+        Attempt savedAttempt = attemptRepository.save(attempt);
+        // 3. Saved Entity ko wapas DTO mein badlo (ModelMapper se)
+        return modelMapper.map(savedAttempt, AttemptDto.class);
     }
 
     // AttemptService ke andar niche ye add kar:
-    public List<Attempt> getUserHistory(Long userId) {
-        return attemptRepository.findByUserId(userId);
+    public List<AttemptDto> getUserHistory(Long userId) {
+        List<Attempt> attempts = attemptRepository.findByUserId(userId);
+        return attempts.stream()
+                .map(attempt -> modelMapper.map(attempt, AttemptDto.class))
+                .collect(Collectors.toList());
     }
 }
