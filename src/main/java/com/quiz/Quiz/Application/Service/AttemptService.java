@@ -31,12 +31,11 @@ public class AttemptService {
                     .orElseThrow(() -> new RuntimeException("Question nahi mila!"));
 
             // Logic: DB ka answer vs User ka selected option
-            if (question.getAnswer().equalsIgnoreCase(ans.getSelectedOption())) {
+            if (question.getCorrectAnswer().equalsIgnoreCase(ans.getSelectedOption())) {
                 correctCount++;
             }
         }
 
-        // Result save karne ke liye Attempt object banao
         Attempt attempt = new Attempt();
         attempt.setScore(correctCount);
         attempt.setTotalQuestions(attemptDto.getAnswers().size());
@@ -45,8 +44,15 @@ public class AttemptService {
         attempt.setQuiz(quiz);
 
         Attempt savedAttempt = attemptRepository.save(attempt);
-        // 3. Saved Entity ko wapas DTO mein badlo (ModelMapper se)
-        return modelMapper.map(savedAttempt, AttemptDto.class);
+
+        // FIX: ModelMapper ki jagah manually data set karo taaki null na aaye
+        AttemptDto responseDto = new AttemptDto();
+        responseDto.setQuizId(quiz.getId());
+        responseDto.setAnswers(attemptDto.getAnswers()); // Wahi answers wapas bhej do jo user ne bheje the
+        // Agar tune DTO mein score field rakhi hai toh:
+        // responseDto.setScore(correctCount);
+
+        return responseDto;
     }
 
     // AttemptService ke andar niche ye add kar:

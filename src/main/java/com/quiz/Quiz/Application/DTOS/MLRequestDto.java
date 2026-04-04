@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class MLRequestDto {
-    private String paragraph;
+    private String text;
 }

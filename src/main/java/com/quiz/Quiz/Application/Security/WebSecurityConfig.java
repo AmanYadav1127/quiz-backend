@@ -57,7 +57,8 @@ public class WebSecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler)) // Error handler
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // No sessions
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/**").permitAll() // Login/Signup sabke liye open
+                        auth.requestMatchers("/api/auth/**").permitAll().requestMatchers("/api/quizzes/**")
+                                .permitAll()// Login/Signup sabke liye open
                                 .anyRequest().authenticated() // Baki sab ke liye Token chahiye
                 );
 

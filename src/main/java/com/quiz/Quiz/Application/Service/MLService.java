@@ -14,16 +14,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MLService {
     private final RestTemplate restTemplate;
-    private final String PYTHON_API_URL = "http://localhost:5000/generate"; // Dost se URL confirm kar lena
+    private final String PYTHON_API_URL = "http://127.0.0.1:5000/generate"; // Dost se URL confirm kar lena
 
     public List<QuestionDto> generateQuestions(String paragraph) {
-        // 1. Request Body taiyar karo
         MLRequestDto request = new MLRequestDto();
-        request.setParagraph(paragraph);
+        request.setText(paragraph); // Agar DTO mein 'text' field hai
 
         try {
-            // 2. Python API ko POST request bhejo
-            // Hum QuestionDto[] (Array) le rahe hain kyunki Python list bhej raha hai
+            // 'paragraph' ki jagah 'request' object bhejo
             QuestionDto[] response = restTemplate.postForObject(PYTHON_API_URL, request, QuestionDto[].class);
 
             if (response != null) {
@@ -32,7 +30,6 @@ public class MLService {
         } catch (Exception e) {
             System.out.println("ML API Connection Failed: " + e.getMessage());
         }
-
-        return new ArrayList<>(); // Agar fail hua toh khali list bhej do
+        return new ArrayList<>();
     }
 }
