@@ -5,8 +5,10 @@ import lombok.Data;
 import java.util.List;
 @Data
 public class AttemptDto {
-    private Long quizId; // Kaunsa quiz attempt kiya
-    private List<QuestionAnswer> answers; // User ne jo answers diye unki list
+    private Long quizId;
+    private int score;          // <--- Ye dalo
+    private int totalQuestions; // <--- Ye dalo
+    private List<QuestionAnswer> answers;
 
     @Data
     public static class QuestionAnswer {

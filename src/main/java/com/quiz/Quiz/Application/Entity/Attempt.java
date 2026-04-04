@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -16,15 +17,21 @@ public class Attempt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer score;       // Kitne sawal sahi hue
-    private Integer totalQuestions; // Total kitne sawal the
-    private LocalDateTime createdAt; // Kab attempt kiya (Date & Time)
+    private int score;
+    private int totalQuestions;
+    private List<String> Answers; // Ye list correct answers store karegi
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;          // Kis user ne attempt kiya
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "quiz_id")
-    private Quiz quiz;          // Kaunsa quiz attempt kiya
+    private Quiz quiz;
+
+    // Ye list user ke selected answers store karegi
+    @ElementCollection
+    @CollectionTable(name = "attempt_answers", joinColumns = @JoinColumn(name = "attempt_id"))
+    private List<String> selectedAnswers;
 }
