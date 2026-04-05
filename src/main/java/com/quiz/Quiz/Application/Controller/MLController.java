@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/ml")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class MLController {
 
     private final MLService mlService;
