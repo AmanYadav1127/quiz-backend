@@ -19,7 +19,6 @@ public class Attempt {
 
     private int score;
     private int totalQuestions;
-    private List<String> Answers; // Ye list correct answers store karegi
     private LocalDateTime createdAt;
 
     @ManyToOne
@@ -33,5 +32,5 @@ public class Attempt {
     // Ye list user ke selected answers store karegi
     @ElementCollection
     @CollectionTable(name = "attempt_answers", joinColumns = @JoinColumn(name = "attempt_id"))
-    private List<String> selectedAnswers;
+    private List<String> answers;
 }

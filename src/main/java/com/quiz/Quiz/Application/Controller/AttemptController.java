@@ -45,7 +45,7 @@ public class AttemptController {
 
     // AttemptController mein submitQuiz ke niche ye dalo:
     @GetMapping("/history")
-    public ResponseEntity<List<AttemptDto>> getMyHistory() {
+    public ResponseEntity<List<Attempt>> getMyHistory() {
         // 1. Token se current user ki email nikalo
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -54,7 +54,7 @@ public class AttemptController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         // 3. Us user ki ID se saari history fetch karo
-        List<AttemptDto> history = attemptService.getUserHistory(user.getId());
+        List<Attempt> history = attemptService.getUserHistory(user.getId());
 
         return ResponseEntity.ok(history);
     }

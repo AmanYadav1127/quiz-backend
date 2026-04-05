@@ -56,10 +56,7 @@ public class AttemptService {
     }
 
     // AttemptService ke andar niche ye add kar:
-    public List<AttemptDto> getUserHistory(Long userId) {
-        List<Attempt> attempts = attemptRepository.findByUserId(userId);
-        return attempts.stream()
-                .map(attempt -> modelMapper.map(attempt, AttemptDto.class))
-                .collect(Collectors.toList());
+    public List<Attempt> getUserHistory(Long userId) {
+        return attemptRepository.findByUserId(userId);
     }
 }
